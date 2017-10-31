@@ -55,15 +55,23 @@ provider:
 #    - exclude-me-dir/**
 
 functions:
+#    The following are a few example events you can configure
   hello:
     handler: handler.hello
     memorySize: 128
     events:
       - http:
-          path: greetings
+          path: hello
           method: get
 
-#    The following are a few example events you can configure
+  world:
+    handler: handler.world
+    memorySize: 128
+    events:
+      - http:
+          path: world
+          method: get
+
 #    NOTE: Please make sure to change your handler code to work with those events
 #    Check the event documentation for details
 #    events:

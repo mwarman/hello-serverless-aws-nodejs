@@ -1,0 +1,27 @@
+{
+  "name": "hello-serverless",
+  "version": "0.0.1",
+  "description": "Hello World application for the Serverless framework",
+  "main": "handler.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mwarman/hello-serverless-aws-nodejs.git"
+  },
+  "keywords": [
+    "hello",
+    "world",
+    "serverless"
+  ],
+  "author": "Matthew Warman",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mwarman/hello-serverless-aws-nodejs/issues"
+  },
+  "homepage": "https://github.com/mwarman/hello-serverless-aws-nodejs#readme",
+  "dependencies": {
+    "lodash": "^4.17.4"
+  }
+}
