@@ -6,35 +6,40 @@ const uuid = require('uuid/v4');
 var db = new AWS.DynamoDB.DocumentClient({
   apiVersion: '2012-10-08'
 });
-var tableName = Process.env.TABLE_NAME;
+var tableName = process.env.TABLE_NAME;
 console.log('tableName:', tableName);
 
 class Greeting {
   constructor(text, author) {
+    console.log('construct Greeting');
+    console.log(` text: ${text}`);
+    console.log(` author: ${author}`);
     this.text = text;
     this.author = author;
   }
 
   save () {
+    console.log('save');
+    this.id = uuid();
     var params = {
       Item: {
-        id: uuid(),
+        id: this.id,
         text: this.text,
         author: this.author
       },
       TableName: tableName
     };
+    console.log(`params: ${JSON.stringify(params)}`);
 
-    db.put(params, (err, data) => {
-      // Promise?
-      if (err) {
-        console.error(err);
-        throw err;
-      } else {
-        console.log(data);
-      }
-    });
+    return db.put(params).promise();
+  }
 
+  toObject () {
+    return {
+      id: this.id,
+      text: this.text,
+      author: this.author
+    }
   }
 };
 
