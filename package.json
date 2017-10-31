@@ -22,6 +22,8 @@
   },
   "homepage": "https://github.com/mwarman/hello-serverless-aws-nodejs#readme",
   "dependencies": {
-    "lodash": "^4.17.4"
+    "aws-sdk": "^2.141.0",
+    "lodash": "^4.17.4",
+    "uuid": "^3.1.0"
   }
 }

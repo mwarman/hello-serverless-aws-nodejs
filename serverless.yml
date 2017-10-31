@@ -55,7 +55,6 @@ provider:
 #    - exclude-me-dir/**
 
 functions:
-#    The following are a few example events you can configure
   hello:
     handler: handler.hello
     memorySize: 128
@@ -72,6 +71,18 @@ functions:
           path: world
           method: get
 
+  createGreeting:
+    handler: greetings.create
+    memorySize: 128
+    environment:
+      TABLE_NAME:
+        Ref: GreetingTable
+    events:
+      - http:
+          path: greetings
+          method: post
+
+#    The following are a few example events you can configure
 #    NOTE: Please make sure to change your handler code to work with those events
 #    Check the event documentation for details
 #    events:
@@ -104,13 +115,24 @@ functions:
 #      variable2: value2
 
 # you can add CloudFormation resource templates here
-#resources:
-#  Resources:
-#    NewResource:
-#      Type: AWS::S3::Bucket
-#      Properties:
-#        BucketName: my-new-bucket
-#  Outputs:
-#     NewOutput:
-#       Description: "Description for the output"
-#       Value: "Some output value"
+resources:
+  Resources:
+    GreetingTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        AttributeDefinitions:
+          -
+            AttributeName: id
+            AttributeType: S
+        KeySchema:
+          -
+            AttributeName: id
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+  Outputs:
+    GreetingTableName:
+      Description: DynamoDB table name
+      Value:
+        Ref: GreetingTable
