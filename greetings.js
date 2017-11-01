@@ -4,7 +4,7 @@ var {Response} = require('./model/response');
 var {Greeting} = require('./model/greeting');
 
 var create = (event, context, callback) => {
-  console.log('> create - body:', event.body);
+  console.log(`> create - event: ${JSON.stringify(event, null, 2)}`);
 
   let body = JSON.parse(event.body);
   let greeting = new Greeting(body.text, body.author);
@@ -19,7 +19,7 @@ var create = (event, context, callback) => {
 };
 
 var findAll = (event, context, callback) => {
-  console.log('> findAll - body:', event.body);
+  console.log(`> findAll - event: ${JSON.stringify(event, null, 2)}`);
 
   Greeting.findAll().then((data) => {
     console.log(`Greetings fetched successfully. data: ${JSON.stringify(data)}`);
@@ -33,13 +33,19 @@ var findAll = (event, context, callback) => {
 };
 
 var findById = (event, context, callback) => {
-  console.log('> findById - event:', event);
+  console.log(`> findById - event: ${JSON.stringify(event, null, 2)}`);
 
   let greetingId = event.pathParameters.greetingId;
 
   Greeting.findById(greetingId).then((data) => {
     console.log(`Greeting fetched successfully. data: ${JSON.stringify(data)}`);
-    callback(null, new Response(data.Item).toJSON());
+    if (data && data.Item) {
+      // Found
+      callback(null, new Response(data.Item).toJSON());
+    } else {
+      // Not Found
+      callback(null, new Response(undefined, 404).toJSON());
+    }
   }).catch((err) => {
     console.log(`Greetings findById resulted in error. error: ${err}`);
     // TODO Simplify ErrorResponse handling.
