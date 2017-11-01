@@ -51,7 +51,19 @@ class Greeting {
 
     return db.scan(params).promise();
   }
-};
+
+  static findById (id) {
+    console.log(`> Greeting.findById - id: ${id}`);
+    var params = {
+      TableName: tableName,
+      Key: {
+        id
+      }
+    };
+    console.log(`params: ${JSON.stringify(params)}`);
+
+    return db.get(params).promise();
+  }};
 
 module.exports = {
   Greeting
