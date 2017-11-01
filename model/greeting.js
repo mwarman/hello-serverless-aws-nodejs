@@ -41,6 +41,16 @@ class Greeting {
       author: this.author
     }
   }
+
+  static findAll () {
+    console.log('findAll');
+    var params = {
+      TableName: tableName
+    };
+    console.log(`params: ${JSON.stringify(params)}`);
+
+    return db.scan(params).promise();
+  }
 };
 
 module.exports = {
