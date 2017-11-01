@@ -1,3 +1,5 @@
+'use strict';
+
 class Response {
 
   constructor(body, statusCode = 200) {

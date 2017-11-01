@@ -1,6 +1,7 @@
 'use strict';
 
 var {Response} = require('./model/response');
+var {ErrorResponse} = require('./model/errorresponse');
 var {Greeting} = require('./model/greeting');
 
 var create = (event, context, callback) => {
@@ -14,7 +15,7 @@ var create = (event, context, callback) => {
     callback(null, new Response(greeting.toObject()).toJSON());
   }).catch((err) => {
     console.log(`Greeting save resulted in error. error: ${err}`);
-    callback(null, new Response(undefined, 400).toJSON());
+    callback(null, new ErrorResponse(err).toJSON());
   });
 };
 
@@ -23,12 +24,11 @@ var findAll = (event, context, callback) => {
 
   Greeting.findAll().then((data) => {
     console.log(`Greetings fetched successfully. data: ${JSON.stringify(data)}`);
-    let response = {};
-    response.greetings = data.Items;
-    callback(null, new Response(response).toJSON());
+    let greetings = data.Items;
+    callback(null, new Response({greetings}).toJSON());
   }).catch((err) => {
     console.log(`Greetings findAll resulted in error. error: ${err}`);
-    callback(null, new Response(undefined, 400).toJSON());
+    callback(null, new ErrorResponse(err).toJSON());
   });
 };
 
@@ -48,11 +48,7 @@ var findById = (event, context, callback) => {
     }
   }).catch((err) => {
     console.log(`Greetings findById resulted in error. error: ${err}`);
-    // TODO Simplify ErrorResponse handling.
-    let response = {
-      message: err.message
-    };
-    callback(null, new Response(response, 400).toJSON());
+    callback(null, new ErrorResponse(err).toJSON());
   });
 };
 
