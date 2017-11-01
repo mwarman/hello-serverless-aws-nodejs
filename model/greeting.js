@@ -10,21 +10,21 @@ var tableName = process.env.TABLE_NAME;
 console.log('tableName:', tableName);
 
 class Greeting {
-  constructor(text, author) {
-    console.log('construct Greeting');
-    console.log(` text: ${text}`);
+  constructor(value, author) {
+    console.log('new Greeting');
+    console.log(` value: ${value}`);
     console.log(` author: ${author}`);
-    this.text = text;
+    this.value = value;
     this.author = author;
   }
 
   save () {
-    console.log('save');
+    console.log('greeting.save');
     this.id = uuid();
     var params = {
       Item: {
         id: this.id,
-        text: this.text,
+        value: this.value,
         author: this.author
       },
       TableName: tableName
@@ -37,13 +37,13 @@ class Greeting {
   toObject () {
     return {
       id: this.id,
-      text: this.text,
+      value: this.value,
       author: this.author
     }
   }
 
   static findAll () {
-    console.log('findAll');
+    console.log('> Greeting.findAll');
     var params = {
       TableName: tableName
     };
@@ -52,8 +52,8 @@ class Greeting {
     return db.scan(params).promise();
   }
 
-  static findById (id) {
-    console.log(`> Greeting.findById - id: ${id}`);
+  static findOne (id) {
+    console.log(`> Greeting.findOne - id: ${id}`);
     var params = {
       TableName: tableName,
       Key: {
@@ -63,7 +63,31 @@ class Greeting {
     console.log(`params: ${JSON.stringify(params)}`);
 
     return db.get(params).promise();
-  }};
+  }
+
+  static findOneAndUpdate (greeting) {
+    console.log(`> Greeting.findOneAndUpdate - greeting: ${JSON.stringify(greeting, null, 2)}`);
+    var params = {
+      TableName: tableName,
+      Key: {
+        id: greeting.id
+      },
+      UpdateExpression: `set #v = :t, #a = :a`,
+      ExpressionAttributeNames: {
+        '#v': 'value',
+        '#a': 'author'
+      },
+      ExpressionAttributeValues: {
+        ':t': greeting.value,
+        ':a': greeting.author
+      },
+      ReturnValues: 'ALL_NEW'
+    };
+    console.log(`params: ${JSON.stringify(params)}`);
+
+    return db.update(params).promise();
+  }
+};
 
 module.exports = {
   Greeting

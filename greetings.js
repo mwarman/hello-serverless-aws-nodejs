@@ -8,7 +8,7 @@ var create = (event, context, callback) => {
   console.log(`> create - event: ${JSON.stringify(event, null, 2)}`);
 
   let body = JSON.parse(event.body);
-  let greeting = new Greeting(body.text, body.author);
+  let greeting = new Greeting(body.value, body.author);
 
   greeting.save().then((data) => {
     console.log(`Greeting saved successfully. data: ${JSON.stringify(data)}`);
@@ -37,7 +37,7 @@ var findById = (event, context, callback) => {
 
   let greetingId = event.pathParameters.greetingId;
 
-  Greeting.findById(greetingId).then((data) => {
+  Greeting.findOne(greetingId).then((data) => {
     console.log(`Greeting fetched successfully. data: ${JSON.stringify(data)}`);
     if (data && data.Item) {
       // Found
@@ -47,7 +47,23 @@ var findById = (event, context, callback) => {
       callback(null, new Response(undefined, 404).toJSON());
     }
   }).catch((err) => {
-    console.log(`Greetings findById resulted in error. error: ${err}`);
+    console.log(`Greetings findOne resulted in error. error: ${err}`);
+    callback(null, new ErrorResponse(err).toJSON());
+  });
+};
+
+var update = (event, context, callback) => {
+  console.log(`> update - event: ${JSON.stringify(event, null, 2)}`);
+
+  let greetingId = event.pathParameters.greetingId;
+  let body = JSON.parse(event.body);
+  body.id = greetingId;
+
+  Greeting.findOneAndUpdate(body).then((data) => {
+    console.log(`Greeting updated successfully. data: ${JSON.stringify(data)}`);
+    callback(null, new Response(data.Attributes).toJSON());
+  }).catch((err) => {
+    console.log(`Greeting update resulted in error. error: ${err}`);
     callback(null, new ErrorResponse(err).toJSON());
   });
 };
@@ -55,5 +71,6 @@ var findById = (event, context, callback) => {
 module.exports = {
   create,
   findAll,
-  findById
+  findById,
+  update
 };

@@ -115,6 +115,17 @@ functions:
           path: greetings/{greetingId}
           method: get
 
+  updateGreeting:
+    handler: greetings.update
+    memorySize: 128
+    environment:
+      TABLE_NAME:
+        Ref: GreetingTable
+    events:
+      - http:
+          path: greetings/{greetingId}
+          method: put
+
 #    The following are a few example events you can configure
 #    NOTE: Please make sure to change your handler code to work with those events
 #    Check the event documentation for details
