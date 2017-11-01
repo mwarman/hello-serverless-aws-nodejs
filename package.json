@@ -1,8 +1,8 @@
 {
   "name": "hello-serverless",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Hello World application for the Serverless framework",
-  "main": "handler.js",
+  "main": "greetings.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
