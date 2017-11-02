@@ -22,12 +22,13 @@ class Greeting {
     console.log('greeting.save');
     this.id = uuid();
     var params = {
+      TableName: tableName,
       Item: {
         id: this.id,
         value: this.value,
         author: this.author
       },
-      TableName: tableName
+      ConditionExpression: "attribute_not_exists(id)"
     };
     console.log(`params: ${JSON.stringify(params)}`);
 
