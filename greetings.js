@@ -68,9 +68,30 @@ var update = (event, context, callback) => {
   });
 };
 
+var remove = (event, context, callback) => {
+  console.log(`> remove - event: ${JSON.stringify(event, null, 2)}`);
+
+  let greetingId = event.pathParameters.greetingId;
+
+  Greeting.remove(greetingId).then((data) => {
+    console.log(`Greeting deleted successfully. data: ${JSON.stringify(data)}`);
+    if (data && data.Attributes) {
+      // Found
+      callback(null, new Response(data.Attributes).toJSON());
+    } else {
+      // Not Found
+      callback(null, new Response(undefined, 404).toJSON());
+    }
+  }).catch((err) => {
+    console.log(`Greeting delete resulted in error. error: ${err}`);
+    callback(null, new ErrorResponse(err).toJSON());
+  });
+};
+
 module.exports = {
   create,
   findAll,
   findById,
-  update
+  update,
+  remove
 };

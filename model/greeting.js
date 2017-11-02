@@ -87,6 +87,20 @@ class Greeting {
 
     return db.update(params).promise();
   }
+
+  static remove (id) {
+    console.log(`> Greeting.remove - id: ${id}`);
+    var params = {
+      TableName: tableName,
+      Key: {
+        id
+      },
+      ReturnValues: 'ALL_OLD'
+    };
+    console.log(`params: ${JSON.stringify(params)}`);
+
+    return db.delete(params).promise();
+  }
 };
 
 module.exports = {
