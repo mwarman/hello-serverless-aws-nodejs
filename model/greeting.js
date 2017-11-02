@@ -72,6 +72,7 @@ class Greeting {
       Key: {
         id: greeting.id
       },
+      ConditionExpression: "attribute_exists(id)",
       UpdateExpression: `set #v = :t, #a = :a`,
       ExpressionAttributeNames: {
         '#v': 'value',

@@ -64,7 +64,11 @@ var update = (event, context, callback) => {
     callback(null, new Response(data.Attributes).toJSON());
   }).catch((err) => {
     console.log(`Greeting update resulted in error. error: ${err}`);
-    callback(null, new ErrorResponse(err).toJSON());
+    if (err.name === 'ConditionalCheckFailedException') {
+      callback(null, new Response(undefined, 404).toJSON());
+    } else {
+      callback(null, new ErrorResponse(err).toJSON());
+    }
   });
 };
 
