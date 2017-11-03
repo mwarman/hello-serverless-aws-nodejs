@@ -28,7 +28,7 @@ class Greeting {
         value: this.value,
         author: this.author
       },
-      ConditionExpression: "attribute_not_exists(id)"
+      ConditionExpression: 'attribute_not_exists(id)'
     };
     console.log(`params: ${JSON.stringify(params)}`);
 
@@ -40,7 +40,7 @@ class Greeting {
       id: this.id,
       value: this.value,
       author: this.author
-    }
+    };
   }
 
   static findAll () {
@@ -73,7 +73,7 @@ class Greeting {
       Key: {
         id: greeting.id
       },
-      ConditionExpression: "attribute_exists(id)",
+      ConditionExpression: 'attribute_exists(id)',
       UpdateExpression: `set #v = :t, #a = :a`,
       ExpressionAttributeNames: {
         '#v': 'value',
@@ -103,7 +103,7 @@ class Greeting {
 
     return db.delete(params).promise();
   }
-};
+}
 
 module.exports = {
   Greeting
