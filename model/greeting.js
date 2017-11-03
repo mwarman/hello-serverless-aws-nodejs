@@ -1,11 +1,8 @@
 'use strict';
 
-const AWS = require('aws-sdk');
 const uuid = require('uuid/v4');
+var db = require('../db/db');
 
-var db = new AWS.DynamoDB.DocumentClient({
-  apiVersion: '2012-10-08'
-});
 var tableName = process.env.TABLE_NAME;
 console.log('tableName:', tableName);
 
@@ -32,7 +29,7 @@ class Greeting {
     };
     console.log(`params: ${JSON.stringify(params)}`);
 
-    return db.put(params).promise();
+    return db.put(params);
   }
 
   toObject () {
@@ -50,7 +47,7 @@ class Greeting {
     };
     console.log(`params: ${JSON.stringify(params)}`);
 
-    return db.scan(params).promise();
+    return db.scan(params);
   }
 
   static findOne (id) {
@@ -63,7 +60,7 @@ class Greeting {
     };
     console.log(`params: ${JSON.stringify(params)}`);
 
-    return db.get(params).promise();
+    return db.get(params);
   }
 
   static findOneAndUpdate (greeting) {
@@ -87,7 +84,7 @@ class Greeting {
     };
     console.log(`params: ${JSON.stringify(params)}`);
 
-    return db.update(params).promise();
+    return db.update(params);
   }
 
   static remove (id) {
@@ -101,7 +98,7 @@ class Greeting {
     };
     console.log(`params: ${JSON.stringify(params)}`);
 
-    return db.delete(params).promise();
+    return db.remove(params);
   }
 }
 
