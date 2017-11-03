@@ -8,7 +8,9 @@ var create = (event, context, callback) => {
   console.log(`> create - event: ${JSON.stringify(event, null, 2)}`);
 
   let body = JSON.parse(event.body);
-  let greeting = new Greeting(body.value, body.author);
+  let value = body.value;
+  let author = body.author;
+  let greeting = new Greeting({value, author});
 
   greeting.save().then((data) => {
     console.log(`Greeting saved successfully. data: ${JSON.stringify(data)}`);

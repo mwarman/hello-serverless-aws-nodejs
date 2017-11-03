@@ -10,7 +10,7 @@ class ErrorResponse extends Response {
       statusCode: statusCode
     }, statusCode);
   }
-};
+}
 
 module.exports = {
   ErrorResponse

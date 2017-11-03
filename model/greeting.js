@@ -1,26 +1,20 @@
 'use strict';
 
-const AWS = require('aws-sdk');
 const uuid = require('uuid/v4');
+var db = require('../db/db');
 
-var db = new AWS.DynamoDB.DocumentClient({
-  apiVersion: '2012-10-08'
-});
 var tableName = process.env.TABLE_NAME;
 console.log('tableName:', tableName);
 
 class Greeting {
-  constructor(value, author) {
-    console.log('new Greeting');
-    console.log(` value: ${value}`);
-    console.log(` author: ${author}`);
-    this.value = value;
-    this.author = author;
+  constructor(greetingObj) {
+    this.id = greetingObj.id || uuid();
+    this.value = greetingObj.value;
+    this.author = greetingObj.author;
   }
 
   save () {
-    console.log('greeting.save');
-    this.id = uuid();
+    console.log('> greeting.save');
     var params = {
       TableName: tableName,
       Item: {
@@ -28,11 +22,11 @@ class Greeting {
         value: this.value,
         author: this.author
       },
-      ConditionExpression: "attribute_not_exists(id)"
+      ConditionExpression: 'attribute_not_exists(id)'
     };
     console.log(`params: ${JSON.stringify(params)}`);
 
-    return db.put(params).promise();
+    return db.put(params);
   }
 
   toObject () {
@@ -40,7 +34,7 @@ class Greeting {
       id: this.id,
       value: this.value,
       author: this.author
-    }
+    };
   }
 
   static findAll () {
@@ -50,7 +44,7 @@ class Greeting {
     };
     console.log(`params: ${JSON.stringify(params)}`);
 
-    return db.scan(params).promise();
+    return db.scan(params);
   }
 
   static findOne (id) {
@@ -63,7 +57,7 @@ class Greeting {
     };
     console.log(`params: ${JSON.stringify(params)}`);
 
-    return db.get(params).promise();
+    return db.get(params);
   }
 
   static findOneAndUpdate (greeting) {
@@ -73,7 +67,7 @@ class Greeting {
       Key: {
         id: greeting.id
       },
-      ConditionExpression: "attribute_exists(id)",
+      ConditionExpression: 'attribute_exists(id)',
       UpdateExpression: `set #v = :t, #a = :a`,
       ExpressionAttributeNames: {
         '#v': 'value',
@@ -87,7 +81,7 @@ class Greeting {
     };
     console.log(`params: ${JSON.stringify(params)}`);
 
-    return db.update(params).promise();
+    return db.update(params);
   }
 
   static remove (id) {
@@ -101,9 +95,9 @@ class Greeting {
     };
     console.log(`params: ${JSON.stringify(params)}`);
 
-    return db.delete(params).promise();
+    return db.remove(params);
   }
-};
+}
 
 module.exports = {
   Greeting
