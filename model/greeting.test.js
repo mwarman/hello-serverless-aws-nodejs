@@ -171,6 +171,52 @@ describe('Greeting', () => {
 
   });
 
+  describe('#findOneAndUpdate', () => {
+
+    // Mock db
+    var db = {
+      update: sinon.spy()
+    };
+    var tableName = 'Greetings';
+    // Inject Mock db into greeting module
+    var greetingModule = rewire('./greeting');
+    greetingModule.__set__({
+      db,
+      tableName
+    });
+
+    it('should call update', () => {
+      greetingModule.Greeting.findOneAndUpdate({
+        id,
+        value,
+        author
+      });
+
+      expect(db.update.calledOnce).toBeTruthy();
+    });
+
+    it('should call update with param values', () => {
+      greetingModule.Greeting.findOneAndUpdate({
+        id,
+        value,
+        author
+      });
+
+      expect(typeof db.update.args[0]).toBe('object');
+
+      var updateParams = db.update.args[0][0];
+      expect(updateParams.TableName).toBe(tableName);
+      expect(updateParams.Key.id).toBe(id);
+      expect(updateParams).toMatchObject({
+        ExpressionAttributeValues: {
+          ':t': value,
+          ':a': author
+        }
+      });
+    });
+
+  });
+
   describe('#remove', () => {
 
     // Mock db
