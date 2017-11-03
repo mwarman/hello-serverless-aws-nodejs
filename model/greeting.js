@@ -7,17 +7,14 @@ var tableName = process.env.TABLE_NAME;
 console.log('tableName:', tableName);
 
 class Greeting {
-  constructor(value, author) {
-    console.log('new Greeting');
-    console.log(` value: ${value}`);
-    console.log(` author: ${author}`);
-    this.value = value;
-    this.author = author;
+  constructor(greetingObj) {
+    this.id = greetingObj.id || uuid();
+    this.value = greetingObj.value;
+    this.author = greetingObj.author;
   }
 
   save () {
-    console.log('greeting.save');
-    this.id = uuid();
+    console.log('> greeting.save');
     var params = {
       TableName: tableName,
       Item: {
