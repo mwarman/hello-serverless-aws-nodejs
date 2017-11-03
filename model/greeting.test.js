@@ -139,4 +139,36 @@ describe('Greeting', () => {
 
   });
 
+  describe('#findOne', () => {
+
+    // Mock db
+    var db = {
+      get: sinon.spy()
+    };
+    var tableName = 'Greetings';
+    // Inject Mock db into greeting module
+    var greetingModule = rewire('./greeting');
+    greetingModule.__set__({
+      db,
+      tableName
+    });
+
+    it('should call get', () => {
+      greetingModule.Greeting.findOne(id);
+
+      expect(db.get.calledOnce).toBeTruthy();
+    });
+
+    it('should call get with param values', () => {
+      greetingModule.Greeting.findOne(id);
+
+      expect(typeof db.get.args[0]).toBe('object');
+
+      var getParams = db.get.args[0][0];
+      expect(getParams.TableName).toBe(tableName);
+      expect(getParams.Key.id).toBe(id);
+    });
+
+  });
+
 });
