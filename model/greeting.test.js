@@ -171,4 +171,37 @@ describe('Greeting', () => {
 
   });
 
+  describe('#remove', () => {
+
+    // Mock db
+    var db = {
+      remove: sinon.spy()
+    };
+    var tableName = 'Greetings';
+    // Inject Mock db into greeting module
+    var greetingModule = rewire('./greeting');
+    greetingModule.__set__({
+      db,
+      tableName
+    });
+
+    it('should call remove', () => {
+      greetingModule.Greeting.remove(id);
+
+      expect(db.remove.calledOnce).toBeTruthy();
+    });
+
+    it('should call remove with param values', () => {
+      greetingModule.Greeting.remove(id);
+
+      expect(typeof db.remove.args[0]).toBe('object');
+
+      var removeParams = db.remove.args[0][0];
+      expect(removeParams.TableName).toBe(tableName);
+      expect(removeParams.ReturnValues).toBe('ALL_OLD');
+      expect(removeParams.Key.id).toBe(id);
+    });
+
+  });
+
 });
