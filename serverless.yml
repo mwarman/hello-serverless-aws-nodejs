@@ -20,6 +20,8 @@ service: hello-serverless
 provider:
   name: aws
   runtime: nodejs6.10
+  environment:
+    LOG_LEVEL: info
   iamRoleStatements:
     - Effect: Allow
       Action:

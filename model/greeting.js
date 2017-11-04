@@ -1,10 +1,11 @@
 'use strict';
 
 const uuid = require('uuid/v4');
+const logger = require('../utils/logger');
 var db = require('../db/db');
 
 var tableName = process.env.TABLE_NAME;
-console.log('tableName:', tableName);
+logger.debug(`tableName: ${tableName}`);
 
 class Greeting {
   constructor(greetingObj) {
@@ -14,7 +15,7 @@ class Greeting {
   }
 
   save () {
-    console.log('> greeting.save');
+    logger.info('> greeting.save');
     var params = {
       TableName: tableName,
       Item: {
@@ -24,7 +25,7 @@ class Greeting {
       },
       ConditionExpression: 'attribute_not_exists(id)'
     };
-    console.log(`params: ${JSON.stringify(params)}`);
+    logger.debug(`params: ${JSON.stringify(params)}`);
 
     return db.put(params);
   }
@@ -38,30 +39,30 @@ class Greeting {
   }
 
   static findAll () {
-    console.log('> Greeting.findAll');
+    logger.info('> Greeting.findAll');
     var params = {
       TableName: tableName
     };
-    console.log(`params: ${JSON.stringify(params)}`);
+    logger.debug(`params: ${JSON.stringify(params)}`);
 
     return db.scan(params);
   }
 
   static findOne (id) {
-    console.log(`> Greeting.findOne - id: ${id}`);
+    logger.info(`> Greeting.findOne - id: ${id}`);
     var params = {
       TableName: tableName,
       Key: {
         id
       }
     };
-    console.log(`params: ${JSON.stringify(params)}`);
+    logger.debug(`params: ${JSON.stringify(params)}`);
 
     return db.get(params);
   }
 
   static findOneAndUpdate (greeting) {
-    console.log(`> Greeting.findOneAndUpdate - greeting: ${JSON.stringify(greeting, null, 2)}`);
+    logger.info(`> Greeting.findOneAndUpdate - greeting: ${JSON.stringify(greeting)}`);
     var params = {
       TableName: tableName,
       Key: {
@@ -79,13 +80,13 @@ class Greeting {
       },
       ReturnValues: 'ALL_NEW'
     };
-    console.log(`params: ${JSON.stringify(params)}`);
+    logger.debug(`params: ${JSON.stringify(params)}`);
 
     return db.update(params);
   }
 
   static remove (id) {
-    console.log(`> Greeting.remove - id: ${id}`);
+    logger.info(`> Greeting.remove - id: ${id}`);
     var params = {
       TableName: tableName,
       Key: {
@@ -93,7 +94,7 @@ class Greeting {
       },
       ReturnValues: 'ALL_OLD'
     };
-    console.log(`params: ${JSON.stringify(params)}`);
+    logger.debug(`params: ${JSON.stringify(params)}`);
 
     return db.remove(params);
   }
