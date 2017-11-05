@@ -1,6 +1,6 @@
 {
   "name": "hello-serverless",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Hello World application for the Serverless framework",
   "main": "greetings.js",
   "scripts": {
