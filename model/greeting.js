@@ -1,26 +1,21 @@
 'use strict';
 
-const AWS = require('aws-sdk');
 const uuid = require('uuid/v4');
+const logger = require('../utils/logger');
+var db = require('../db/db');
 
-var db = new AWS.DynamoDB.DocumentClient({
-  apiVersion: '2012-10-08'
-});
 var tableName = process.env.TABLE_NAME;
-console.log('tableName:', tableName);
+logger.debug(`tableName: ${tableName}`);
 
 class Greeting {
-  constructor(value, author) {
-    console.log('new Greeting');
-    console.log(` value: ${value}`);
-    console.log(` author: ${author}`);
-    this.value = value;
-    this.author = author;
+  constructor(greetingObj) {
+    this.id = greetingObj.id || uuid();
+    this.value = greetingObj.value;
+    this.author = greetingObj.author;
   }
 
   save () {
-    console.log('greeting.save');
-    this.id = uuid();
+    logger.info('> greeting.save');
     var params = {
       TableName: tableName,
       Item: {
@@ -28,11 +23,11 @@ class Greeting {
         value: this.value,
         author: this.author
       },
-      ConditionExpression: "attribute_not_exists(id)"
+      ConditionExpression: 'attribute_not_exists(id)'
     };
-    console.log(`params: ${JSON.stringify(params)}`);
+    logger.debug(`params: ${JSON.stringify(params)}`);
 
-    return db.put(params).promise();
+    return db.put(params);
   }
 
   toObject () {
@@ -40,40 +35,40 @@ class Greeting {
       id: this.id,
       value: this.value,
       author: this.author
-    }
+    };
   }
 
   static findAll () {
-    console.log('> Greeting.findAll');
+    logger.info('> Greeting.findAll');
     var params = {
       TableName: tableName
     };
-    console.log(`params: ${JSON.stringify(params)}`);
+    logger.debug(`params: ${JSON.stringify(params)}`);
 
-    return db.scan(params).promise();
+    return db.scan(params);
   }
 
   static findOne (id) {
-    console.log(`> Greeting.findOne - id: ${id}`);
+    logger.info(`> Greeting.findOne - id: ${id}`);
     var params = {
       TableName: tableName,
       Key: {
         id
       }
     };
-    console.log(`params: ${JSON.stringify(params)}`);
+    logger.debug(`params: ${JSON.stringify(params)}`);
 
-    return db.get(params).promise();
+    return db.get(params);
   }
 
   static findOneAndUpdate (greeting) {
-    console.log(`> Greeting.findOneAndUpdate - greeting: ${JSON.stringify(greeting, null, 2)}`);
+    logger.info(`> Greeting.findOneAndUpdate - greeting: ${JSON.stringify(greeting)}`);
     var params = {
       TableName: tableName,
       Key: {
         id: greeting.id
       },
-      ConditionExpression: "attribute_exists(id)",
+      ConditionExpression: 'attribute_exists(id)',
       UpdateExpression: `set #v = :t, #a = :a`,
       ExpressionAttributeNames: {
         '#v': 'value',
@@ -85,13 +80,13 @@ class Greeting {
       },
       ReturnValues: 'ALL_NEW'
     };
-    console.log(`params: ${JSON.stringify(params)}`);
+    logger.debug(`params: ${JSON.stringify(params)}`);
 
-    return db.update(params).promise();
+    return db.update(params);
   }
 
   static remove (id) {
-    console.log(`> Greeting.remove - id: ${id}`);
+    logger.info(`> Greeting.remove - id: ${id}`);
     var params = {
       TableName: tableName,
       Key: {
@@ -99,11 +94,11 @@ class Greeting {
       },
       ReturnValues: 'ALL_OLD'
     };
-    console.log(`params: ${JSON.stringify(params)}`);
+    logger.debug(`params: ${JSON.stringify(params)}`);
 
-    return db.delete(params).promise();
+    return db.remove(params);
   }
-};
+}
 
 module.exports = {
   Greeting
