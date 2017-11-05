@@ -30,6 +30,8 @@ Use the Serverless Framework with AWS to:
 
 * [Mocha](http://mochajs.org/)
 * [Expect](https://facebook.github.io/jest/docs/en/expect.html)
+* [rewire](https://www.npmjs.com/package/rewire)
+* [Sinon](http://sinonjs.org/)
 
 #### Linting
 
