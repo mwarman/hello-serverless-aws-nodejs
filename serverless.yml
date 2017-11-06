@@ -84,26 +84,8 @@ provider:
 #    - exclude-me-dir/**
 
 functions:
-  hello:
-    handler: handler.hello
-    memorySize: 128
-    events:
-      - http:
-          path: hello
-          method: get
-          cors: true
-
-  world:
-    handler: handler.world
-    memorySize: 128
-    events:
-      - http:
-          path: world
-          method: get
-          cors: true
-
   createGreeting:
-    handler: greetings.create
+    handler: handler/greetings.create
     memorySize: 128
     environment:
       TABLE_NAME:
@@ -115,7 +97,7 @@ functions:
           cors: true
 
   findGreetings:
-    handler: greetings.findAll
+    handler: handler/greetings.findAll
     memorySize: 128
     environment:
       TABLE_NAME:
@@ -127,7 +109,7 @@ functions:
           cors: true
 
   findGreeting:
-    handler: greetings.findById
+    handler: handler/greetings.findById
     memorySize: 128
     environment:
       TABLE_NAME:
@@ -139,7 +121,7 @@ functions:
           cors: true
 
   updateGreeting:
-    handler: greetings.update
+    handler: handler/greetings.update
     memorySize: 128
     environment:
       TABLE_NAME:
@@ -151,7 +133,7 @@ functions:
           cors: true
 
   deleteGreeting:
-    handler: greetings.remove
+    handler: handler/greetings.remove
     memorySize: 128
     environment:
       TABLE_NAME:
