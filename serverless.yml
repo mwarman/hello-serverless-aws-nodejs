@@ -22,6 +22,7 @@ plugins:
 
 custom:
   stage: ${opt:stage, self:provider.stage}
+  region: ${opt:region, self:provider.region}
   domains:
     dev: dev-api.leanstacks.net
     qa: qa-api.leanstacks.net
@@ -38,6 +39,7 @@ provider:
   runtime: nodejs6.10
   environment:
     LOG_LEVEL: info
+    TABLE_NAME: ${self:service}-${self:custom.stage}-Greetings
   iamRoleStatements:
     - Effect: Allow
       Action:
@@ -48,7 +50,7 @@ provider:
         - dynamodb:PutItem
         - dynamodb:UpdateItem
         - dynamodb:DeleteItem
-      Resource: "arn:aws:dynamodb:us-east-1:*:*"
+      Resource: "arn:aws:dynamodb:${self:custom.region}:*:table/${self:provider.environment.TABLE_NAME}"
 
 # you can overwrite defaults here
 #  stage: dev
@@ -87,9 +89,6 @@ functions:
   createGreeting:
     handler: handler/greetings.create
     memorySize: 128
-    environment:
-      TABLE_NAME:
-        Ref: GreetingTable
     events:
       - http:
           path: greetings
@@ -99,9 +98,6 @@ functions:
   findGreetings:
     handler: handler/greetings.findAll
     memorySize: 128
-    environment:
-      TABLE_NAME:
-        Ref: GreetingTable
     events:
       - http:
           path: greetings
@@ -111,9 +107,6 @@ functions:
   findGreeting:
     handler: handler/greetings.findById
     memorySize: 128
-    environment:
-      TABLE_NAME:
-        Ref: GreetingTable
     events:
       - http:
           path: greetings/{greetingId}
@@ -123,9 +116,6 @@ functions:
   updateGreeting:
     handler: handler/greetings.update
     memorySize: 128
-    environment:
-      TABLE_NAME:
-        Ref: GreetingTable
     events:
       - http:
           path: greetings/{greetingId}
@@ -135,9 +125,6 @@ functions:
   deleteGreeting:
     handler: handler/greetings.remove
     memorySize: 128
-    environment:
-      TABLE_NAME:
-        Ref: GreetingTable
     events:
       - http:
           path: greetings/{greetingId}
@@ -182,6 +169,7 @@ resources:
     GreetingTable:
       Type: AWS::DynamoDB::Table
       Properties:
+        TableName: ${self:provider.environment.TABLE_NAME}
         AttributeDefinitions:
           -
             AttributeName: id
