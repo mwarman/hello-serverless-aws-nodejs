@@ -91,6 +91,7 @@ functions:
       - http:
           path: hello
           method: get
+          cors: true
 
   world:
     handler: handler.world
@@ -99,6 +100,7 @@ functions:
       - http:
           path: world
           method: get
+          cors: true
 
   createGreeting:
     handler: greetings.create
@@ -110,6 +112,7 @@ functions:
       - http:
           path: greetings
           method: post
+          cors: true
 
   findGreetings:
     handler: greetings.findAll
@@ -121,6 +124,7 @@ functions:
       - http:
           path: greetings
           method: get
+          cors: true
 
   findGreeting:
     handler: greetings.findById
@@ -132,6 +136,7 @@ functions:
       - http:
           path: greetings/{greetingId}
           method: get
+          cors: true
 
   updateGreeting:
     handler: greetings.update
@@ -143,6 +148,7 @@ functions:
       - http:
           path: greetings/{greetingId}
           method: put
+          cors: true
 
   deleteGreeting:
     handler: greetings.remove
@@ -154,6 +160,7 @@ functions:
       - http:
           path: greetings/{greetingId}
           method: delete
+          cors: true
 
 #    The following are a few example events you can configure
 #    NOTE: Please make sure to change your handler code to work with those events
