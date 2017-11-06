@@ -17,6 +17,22 @@ service: hello-serverless
 # Check out our docs for more details
 # frameworkVersion: "=X.X.X"
 
+plugins:
+  - serverless-domain-manager
+
+custom:
+  stage: ${opt:stage, self:provider.stage}
+  domains:
+    dev: dev-api.leanstacks.net
+    qa: qa-api.leanstacks.net
+    prod: api.leanstacks.net
+  customDomain:
+    domainName: ${self:custom.domains.${self:custom.stage}}
+    basePath: ''
+    certificateName: '*.leanstacks.net'
+    stage: ${self:custom.stage}
+    createRoute53Record: true
+
 provider:
   name: aws
   runtime: nodejs6.10

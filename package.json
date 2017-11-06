@@ -33,6 +33,7 @@
     "expect": "^21.2.1",
     "mocha": "^4.0.1",
     "rewire": "^2.5.2",
+    "serverless-domain-manager": "^1.1.16",
     "sinon": "^4.1.1"
   }
 }

@@ -20,11 +20,17 @@ Use the Serverless Framework with AWS to:
 
 ### Production
 
+#### Application
+
 * [AWS SDK](https://aws.amazon.com/sdk-for-node-js/)
 * [uuid](https://www.npmjs.com/package/uuid)
 * [Lodash](https://lodash.com/)
 
 ### Development
+
+#### Operational
+
+* [Serverless Domain Manager](https://www.npmjs.com/package/serverless-domain-manager)
 
 #### Testing
 
