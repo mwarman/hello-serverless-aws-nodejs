@@ -37,6 +37,7 @@ custom:
 provider:
   name: aws
   runtime: nodejs6.10
+  memorySize: 128
   environment:
     LOG_LEVEL: info
     TABLE_NAME: ${self:service}-${self:custom.stage}-Greetings
@@ -88,7 +89,6 @@ provider:
 functions:
   createGreeting:
     handler: handler/greetings.create
-    memorySize: 128
     events:
       - http:
           path: greetings
@@ -97,7 +97,6 @@ functions:
 
   findGreetings:
     handler: handler/greetings.findAll
-    memorySize: 128
     events:
       - http:
           path: greetings
@@ -106,7 +105,6 @@ functions:
 
   findGreeting:
     handler: handler/greetings.findById
-    memorySize: 128
     events:
       - http:
           path: greetings/{greetingId}
@@ -115,7 +113,6 @@ functions:
 
   updateGreeting:
     handler: handler/greetings.update
-    memorySize: 128
     events:
       - http:
           path: greetings/{greetingId}
@@ -124,7 +121,6 @@ functions:
 
   deleteGreeting:
     handler: handler/greetings.remove
-    memorySize: 128
     events:
       - http:
           path: greetings/{greetingId}
