@@ -1,9 +1,9 @@
 'use strict';
 
-var logger = require('./utils/logger');
-var {Response} = require('./model/response');
-var {ErrorResponse} = require('./model/errorresponse');
-var {Greeting} = require('./model/greeting');
+var logger = require('../utils/logger');
+var {Response} = require('../model/response');
+var {ErrorResponse} = require('../model/errorresponse');
+var {Greeting} = require('../model/greeting');
 
 logger.debug(`NODE_ENV: ${process.env.NODE_ENV}`);
 

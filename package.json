@@ -1,6 +1,6 @@
 {
   "name": "hello-serverless",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Hello World application for the Serverless framework",
   "main": "greetings.js",
   "scripts": {
@@ -33,6 +33,7 @@
     "expect": "^21.2.1",
     "mocha": "^4.0.1",
     "rewire": "^2.5.2",
+    "serverless-domain-manager": "^1.1.16",
     "sinon": "^4.1.1"
   }
 }
