@@ -5,6 +5,9 @@ class Response {
   constructor(body, statusCode = 200) {
     this.statusCode = statusCode;
     this.body = body;
+    this.headers = {
+      'Access-Control-Allow-Origin': '*'
+    };
   }
 
   toJSON (stringifyBody = true) {
@@ -12,6 +15,7 @@ class Response {
 
     return {
       statusCode: this.statusCode,
+      headers: this.headers,
       body: bodyValue
     };
   }
